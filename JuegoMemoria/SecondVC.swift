@@ -16,9 +16,8 @@ class SecondVC: UIViewController {
     
     @IBOutlet weak var imageView: UIImageView!
     
-    override func viewDidLoad() {
+    override func viewWillAppear(_ animated: Bool) {
         changeImage()
-        super.viewDidLoad()
     }
     
     
@@ -36,7 +35,7 @@ class SecondVC: UIViewController {
     func changeImage()  {
         numbers = getArrayNumbers()
         var index = 0
-        Timer.scheduledTimer(withTimeInterval: 1.5, repeats: true, block: { timer in
+        Timer.scheduledTimer(withTimeInterval: 2, repeats: true, block: { timer in
             if index < images.count{
                 self.imageView.image = images[numbers[index]]
             }

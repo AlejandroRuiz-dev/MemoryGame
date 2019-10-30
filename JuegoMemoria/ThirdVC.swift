@@ -45,13 +45,15 @@ class ThirdVC: UIViewController {
     @IBOutlet weak var buttonEnd: UIButton!
     
     var imageViews: [UIImageView] = []
-    var lifes = 9
-    
+    var lifes = 13
+    var imagesInOrder: [UIImageView] = []
     var index = 0
     
     override func viewDidLoad() {
-        fill()
         super.viewDidLoad()
+        fill()
+        let bgSetter: BGSet = BGSet()
+        bgSetter.setBackground(view: self.view)
     }
     
     func fill() {
@@ -86,7 +88,6 @@ class ThirdVC: UIViewController {
         let location = touch.location(in: self.view)
 
         let imageMove = chooseImage()
-        
         if touch.view == imageMove{
             imageMove.center =  substract(lhs: location, rhs: getCorrectCG())
             touchesMoved(touches, with: event)
@@ -98,7 +99,7 @@ class ThirdVC: UIViewController {
                 self.labelFail.isHidden = true
             })
             if lifes <= 0{
-                lose()
+               lose()
             }
         }
     }
@@ -122,10 +123,20 @@ class ThirdVC: UIViewController {
     @IBAction func buttonPlaceUse(_ sender: UIButton) {
         buttonPlace.isEnabled = false
         buttonPlace.backgroundColor = #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)
+        imagesInOrder.append(chooseImage())
         index += 1
+        var delay: Double = 1
         if index == 9 {
+            for i in 0...imagesInOrder.count - 1{
+                UIView.animate(withDuration: 1, delay: delay, options: [], animations: {
+                    self.imagesInOrder[i].alpha = 0
+                    delay += 1
+                }) { (ok) in
+                    self.imagesInOrder[i].alpha = 1
+                }
+            }
             buttonPlace.isHidden = true
-            buttonEnd.setTitle("VICTORIA, pulsa para volver a jugar", for: .normal)
+            buttonEnd.setTitle("WIN, tap to replay", for: .normal)
             buttonEnd.isHidden = false
         }
     }
@@ -134,14 +145,14 @@ class ThirdVC: UIViewController {
     func getCorrectCG() -> CGPoint {
         let imageToFind  = chooseImage()
         if stackViewLeft.contains(imageToFind){
-            correctCG = CGPoint(x:35, y: 100)
+            correctCG = CGPoint(x:45, y: 80)
         }
         else if stackViewCenter.contains(imageToFind){
-            correctCG = CGPoint(x:145, y: 100)
+            correctCG = CGPoint(x:155, y: 80)
             
         }
         else if stackViewRight.contains(imageToFind){
-            correctCG = CGPoint(x:255, y: 100)
+            correctCG = CGPoint(x:265, y: 80)
         }
         return correctCG
     }
@@ -153,7 +164,7 @@ class ThirdVC: UIViewController {
     func lose()   {
         labelFail.isEnabled = false
         buttonPlace.isHidden = true
-        buttonEnd.setTitle("DERROTA, pulsa para volver a jugar", for: .normal)
+        buttonEnd.setTitle("DEFEAT, tap to replay", for: .normal)
         buttonEnd.isHidden = false
     }
     

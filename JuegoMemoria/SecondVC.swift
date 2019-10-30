@@ -16,7 +16,10 @@ class SecondVC: UIViewController {
     
     @IBOutlet weak var imageView: UIImageView!
     
+    
     override func viewWillAppear(_ animated: Bool) {
+        let bgSetter: BGSet = BGSet()
+        bgSetter.setBackground(view: self.view)
         changeImage()
     }
     
